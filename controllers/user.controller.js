@@ -32,8 +32,8 @@ export const register = async (req, res) => {
             phoneNumber,
             password: hashedPassword,
             role,
-            profile:{
-                profilePhoto:cloudResponse.secure_url,
+            profile: {
+                profilePhoto: cloudResponse.secure_url,
             }
         });
 
@@ -90,11 +90,14 @@ export const login = async (req, res) => {
             profile: user.profile,
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'Strict' }).json({
-            message: `Welcome back ${user.fullname}`,
-            user,
-            success: true
-        })
+        res.status(200)
+            .cookie("token", token, {
+                httpOnly: true,
+                secure: true, // HARUS true di HTTPS
+                sameSite: "none", // AGAR cookie bisa dikirim cross-origin
+                maxAge: 24 * 60 * 60 * 1000, // 1 day
+            })
+
     } catch (error) {
         console.log(error);
     }
