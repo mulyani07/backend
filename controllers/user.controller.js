@@ -91,12 +91,12 @@ export const login = async (req, res) => {
         }
 
         res.status(200)
-            .cookie("token", token, {
-                httpOnly: true,
-                secure: true, // HARUS true di HTTPS
-                sameSite: "none", // AGAR cookie bisa dikirim cross-origin
-                maxAge: 24 * 60 * 60 * 1000, // 1 day
-            })
+  .cookie("token", token, {
+    httpOnly: true,
+    secure: false,         // HTTPS belum aktif, jadi false
+    sameSite: "lax",       // lax cocok untuk dev environment
+    maxAge: 24 * 60 * 60 * 1000,
+  });
 
     } catch (error) {
         console.log(error);
