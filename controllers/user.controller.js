@@ -90,14 +90,11 @@ export const login = async (req, res) => {
             profile: user.profile,
         }
 
-        res.status(200)
-  .cookie("token", token, {
-    httpOnly: true,
-    secure: false,         // HTTPS belum aktif, jadi false
-    sameSite: "lax",       // lax cocok untuk dev environment
-    maxAge: 24 * 60 * 60 * 1000,
-  });
-
+        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'Strict' }).json({
+            message: `Welcome back ${user.fullname}`,
+            user,
+            success: true
+        })
     } catch (error) {
         console.log(error);
     }
